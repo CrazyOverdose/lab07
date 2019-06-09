@@ -9,7 +9,7 @@ $ open https://travis-ci.org
 ## Tasks
 
 - [x] 1. Авторизоваться на сервисе **Travis CI** с использованием **GitHub** аккаунта
-- [x] 2. Создать публичный репозиторий с названием **lab04** на сервисе **GitHub**
+- [x] 2. Создать публичный репозиторий с названием **lab05** на сервисе **GitHub**
 - [x] 3. Ознакомиться со ссылками учебного материала
 - [x] 4. Включить интеграцию сервиса **Travis CI** с созданным репозиторием
 - [x] 5. Получить токен для **Travis CLI** с правами **repo** и **user**
@@ -163,16 +163,16 @@ Done installing documentation for multipart-post, faraday, faraday_middleware, h
 ```
 Клонирование репозитория ЛР3 в ЛР4
 ```ShellSession
-$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04 # Клонирование репозитория
-Клонирование в «projects/lab04»…
+$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab05 # Клонирование репозитория
+Клонирование в «projects/lab05»…
 remote: Enumerating objects: 27, done.
 remote: Counting objects: 100% (27/27), done.
 remote: Compressing objects: 100% (19/19), done.
 remote: Total 27 (delta 4), reused 23 (delta 3), pack-reused 0
 Распаковка объектов: 100% (27/27), готово.
-$ cd projects/lab04  # Переход в директорию
+$ cd projects/lab05  # Переход в директорию
 $ git remote remove origin # Удаление связки с репозиторием
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab04 # Добавление связки
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05 # Добавление связки
 ```
 Записывание в .travis.yml информации о языке
 ```ShellSession
@@ -217,7 +217,7 @@ Warnings for .travis.yml:
 ```
 Добавление в начало файла строки с фрагментом вставки значка сервиса Travis CI в формате Markdown
 ```ShellSession
-$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab04.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab04)' README.md   # Команда изменена
+$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab05.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab05)' README.md   # Команда изменена
 
 ```
 Отправка изменений
@@ -237,7 +237,7 @@ Password for 'https://CrazyOverdose@github.com':
 Запись объектов: 100% (31/31), 14.38 KiB | 3.59 MiB/s, готово.
 Всего 31 (изменения 6), повторно использовано 0 (изменения 0)
 remote: Resolving deltas: 100% (6/6), done.
-To https://github.com/CrazyOverdose/lab04
+To https://github.com/CrazyOverdose/lab05
  * [new branch]      master -> master
 ```
 Работа с Travis CI
@@ -269,7 +269,7 @@ Description: ???
 CrazyOverdose/lab03 (active: no, admin: yes, push: yes, pull: yes)
 Description: ???
 
-CrazyOverdose/lab04 (active: yes, admin: yes, push: yes, pull: yes)
+CrazyOverdose/lab05 (active: yes, admin: yes, push: yes, pull: yes)
 Description: ???
 
 CrazyOverdose/lab05 (active: no, admin: yes, push: yes, pull: yes)
@@ -291,10 +291,10 @@ CrazyOverdose/labaa02 (active: no, admin: yes, push: yes, pull: yes)
 Description: Изучение систем контроля версий на примере Git
 
 $ travis enable   # Активация проекта
-Detected repository as CrazyOverdose/lab04, is this correct? |yes| yes
-CrazyOverdose/lab04: enabled :)
+Detected repository as CrazyOverdose/lab05, is this correct? |yes| yes
+CrazyOverdose/lab05: enabled :)
 $ travis whatsup   # Список последних сборок
-CrazyOverdose/lab04 passed: #1
+CrazyOverdose/lab05 passed: #1
 $ travis branches    # Список последних сборок по веткам проекта
 master:  #1    passed     added CI
 $ travis history  # История сборок для проекта
@@ -304,7 +304,7 @@ Job #1.1:  added CI
 State:         passed
 Type:          push
 Branch:        master
-Compare URL:   https://github.com/CrazyOverdose/lab04/compare/89df61653546^...da3553aea864
+Compare URL:   https://github.com/CrazyOverdose/lab05/compare/89df61653546^...da3553aea864
 Duration:      28 sec
 Started:       2019-06-09 19:09:31
 Finished:      2019-06-09 19:09:59
