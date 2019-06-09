@@ -8,7 +8,7 @@ $ open https://github.com/google/googletest
 
 ## Tasks
 
-- [x] 1. Создать публичный репозиторий с названием **lab05** на сервисе **GitHub**
+- [x] 1. Создать публичный репозиторий с названием **lab06** на сервисе **GitHub**
 - [x] 2. Выполнить инструкцию учебного материала
 - [x] 3. Ознакомиться со ссылками учебного материала
 - [x] 4. Составить отчет и отправить ссылку личным сообщением в **Slack**
@@ -28,22 +28,22 @@ $ source scripts/activate  # Выполнение скрипта подгото�
 ```
 Клонирование репозитория ЛР4 в ЛР5
 ```ShellSession
-$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab05   # Клонирование репозитория
-Клонирование в «projects/lab05»…
+$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab06   # Клонирование репозитория
+Клонирование в «projects/lab06»…
 remote: Enumerating objects: 34, done.
 remote: Counting objects: 100% (34/34), done.
 remote: Compressing objects: 100% (23/23), done.
 remote: Total 34 (delta 7), reused 30 (delta 6), pack-reused 0
 Распаковка объектов: 100% (34/34), готово.
-$ cd projects/lab05   # Переход в директорию
+$ cd projects/lab06   # Переход в директорию
 $ git remote remove origin  # Удаление связки с репозиторием
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05  # Добавление связки
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06  # Добавление связки
 ```
 Добавление подмодуля тестирования
 ```ShellSession
 $ mkdir third-party # Создание папки
 $ git submodule add https://github.com/google/googletest third-party/gtest # Скачивание удаленного репозитория в указанную папку
-Клонирование в «/home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/third-party/gtest»…
+Клонирование в «/home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/third-party/gtest»…
 remote: Enumerating objects: 16892, done.
 remote: Total 16892 (delta 0), reused 0 (delta 0), pack-reused 16892
 Получение объектов: 100% (16892/16892), 5.96 MiB | 107.00 KiB/s, готово.
@@ -139,7 +139,7 @@ $ cmake -H. -B_build -DBUILD_TESTS=ON  # Конфигурирование
 -- Found Threads: TRUE  
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/_build
+-- Build files have been written to: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
 
 $ cmake --build _build   # Компиляция
 Scanning dependencies of target print
@@ -169,7 +169,7 @@ Scanning dependencies of target gmock_main
 
 $ cmake --build _build --target test   # Компиляция указанного
 Running tests...
-Test project /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/_build
+Test project /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
     Start 1: check
 1/1 Test #1: check ............................   Passed    0.00 sec
 
@@ -180,7 +180,7 @@ Total Test time (real) =   0.01 sec
 Проверка тестов
 ```ShellSession
 $ _build/check  # Исполнение файла с тестами
-Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
 [==========] Running 1 test from 1 test case.
 [----------] Global test environment set-up.
 [----------] 1 test from Print
@@ -194,9 +194,9 @@ Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/t
 
 $ cmake --build _build --target test -- ARGS=--verbose  # Компиляция с выводом всей информации
 Running tests...
-UpdateCTestConfiguration  from :/home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/_build/DartConfiguration.tcl
-UpdateCTestConfiguration  from :/home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/_build/DartConfiguration.tcl
-Test project /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/_build
+UpdateCTestConfiguration  from :/home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/DartConfiguration.tcl
+Test project /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
 Constructing a list of tests
 Done constructing a list of tests
 Updating test list for fixtures
@@ -206,9 +206,9 @@ Checking test dependency graph end
 test 1
     Start 1: check
 
-1: Test command: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/_build/check
+1: Test command: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/check
 1: Test timeout computed to be: 10000000
-1: Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+1: Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
 1: [==========] Running 1 test from 1 test case.
 1: [----------] Global test environment set-up.
 1: [----------] 1 test from Print
@@ -228,7 +228,7 @@ Total Test time (real) =   0.00 sec
 ```
 Обновление Travis CI конфига
 ```ShellSession
-$ gsed -i 's/lab04/lab05/g' README.md  # Замена левой строки на правую
+$ gsed -i 's/lab04/lab06/g' README.md  # Замена левой строки на правую
 $ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml 
 # Дописывание к найденной левой строки строке правой строки
 $ gsed -i '/cmake --build _build --target install/a\ # Дописывание правой строки после найденной левой строки
@@ -303,7 +303,7 @@ index 55b5a9f..609c771 100644
  
  - [x] 1. Авторизоваться на сервисе **Travis CI** с использованием **GitHub** аккаунта
 -- [x] 2. Создать публичный репозиторий с названием **lab04** на сервисе **GitHub**
-+- [x] 2. Создать публичный репозиторий с названием **lab05** на сервисе **GitHub**
++- [x] 2. Создать публичный репозиторий с названием **lab06** на сервисе **GitHub**
  - [x] 3. Ознакомиться со ссылками учебного материала
  - [x] 4. Включить интеграцию сервиса **Travis CI** с созданным репозиторием
  - [x] 5. Получить токен для **Travis CLI** с правами **repo** и **user**
@@ -314,18 +314,18 @@ Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
 
 -$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04 # Клонирование репозитория
 -Клонирование в «projects/lab04»…
-+$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab05 # Клонирование репозитория
-+Клонирование в «projects/lab05»…
++$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab06 # Клонирование репозитория
++Клонирование в «projects/lab06»…
  remote: Enumerating objects: 27, done.
  remote: Counting objects: 100% (27/27), done.
  remote: Compressing objects: 100% (19/19), done.
  remote: Total 27 (delta 4), reused 23 (delta 3), pack-reused 0
  Распаковка объектов: 100% (27/27), готово.
 -$ cd projects/lab04  # Переход в директорию
-+$ cd projects/lab05  # Переход в директорию
++$ cd projects/lab06  # Переход в директорию
  $ git remote remove origin # Удаление связки с репозиторием
 -$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab04 # Добавление связки
-+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05 # Добавление связки
++$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06 # Добавление связки
 
  Записывание в .travis.yml информации о языке
 
@@ -335,7 +335,7 @@ Stage this hunk [y,n,q,a,d,K,j,J,g,/,s,e,?]? y
  Добавление в начало файла строки с фрагментом вставки значка сервиса Travis CI в формате Markdown
  
 -$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab04.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab04)' README.md   # Команда изменена
-+$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab05.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab05)' README.md   # Команда изменена
++$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab06.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab06)' README.md   # Команда изменена
  
  Отправка изменений
 Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
@@ -344,7 +344,7 @@ Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
  Всего 31 (изменения 6), повторно использовано 0 (изменения 0)
  remote: Resolving deltas: 100% (6/6), done.
 -To https://github.com/CrazyOverdose/lab04
-+To https://github.com/CrazyOverdose/lab05
++To https://github.com/CrazyOverdose/lab06
   * [new branch]      master -> master
  
  Работа с Travis CI
@@ -354,10 +354,10 @@ Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
  Description: ???
  
 -CrazyOverdose/lab04 (active: yes, admin: yes, push: yes, pull: yes)
-+CrazyOverdose/lab05 (active: yes, admin: yes, push: yes, pull: yes)
++CrazyOverdose/lab06 (active: yes, admin: yes, push: yes, pull: yes)
  Description: ???
  
- CrazyOverdose/lab05 (active: no, admin: yes, push: yes, pull: yes)
+ CrazyOverdose/lab06 (active: no, admin: yes, push: yes, pull: yes)
 Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
 @@ -291,10 +291,10 @@ CrazyOverdose/labaa02 (active: no, admin: yes, push: yes, pull: yes)
  Description: Изучение систем контроля версий на примере Git
@@ -365,11 +365,11 @@ Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
  $ travis enable   # Активация проекта
 -Detected repository as CrazyOverdose/lab04, is this correct? |yes| yes
 -CrazyOverdose/lab04: enabled :)
-+Detected repository as CrazyOverdose/lab05, is this correct? |yes| yes
-+CrazyOverdose/lab05: enabled :)
++Detected repository as CrazyOverdose/lab06, is this correct? |yes| yes
++CrazyOverdose/lab06: enabled :)
  $ travis whatsup   # Список последних сборок
 -CrazyOverdose/lab04 passed: #1
-+CrazyOverdose/lab05 passed: #1
++CrazyOverdose/lab06 passed: #1
  $ travis branches    # Список последних сборок по веткам проекта
  master:  #1    passed     added CI
  $ travis history  # История сборок для проекта
@@ -379,7 +379,7 @@ Stage this hunk [y,n,q,a,d,K,j,J,g,/,s,e,?]? y
  Type:          push
  Branch:        master
 -Compare URL:   https://github.com/CrazyOverdose/lab04/compare/89df61653546^...da3553aea864
-+Compare URL:   https://github.com/CrazyOverdose/lab05/compare/89df61653546^...da3553aea864
++Compare URL:   https://github.com/CrazyOverdose/lab06/compare/89df61653546^...da3553aea864
  Duration:      28 sec
  Started:       2019-06-09 19:09:31
  Finished:      2019-06-09 19:09:59
@@ -401,7 +401,7 @@ Password for 'https://CrazyOverdose@github.com':
 Запись объектов: 100% (45/45), 21.24 KiB | 4.25 MiB/s, готово.
 Всего 45 (изменения 12), повторно использовано 0 (изменения 0)
 remote: Resolving deltas: 100% (12/12), done.
-To https://github.com/CrazyOverdose/lab05
+To https://github.com/CrazyOverdose/lab06
  * [new branch]      master -> master
 
 ```
@@ -410,15 +410,15 @@ To https://github.com/CrazyOverdose/lab05
 $ travis login --auto
 Successfully logged in as CrazyOverdose!
 $ travis enable
-Detected repository as CrazyOverdose/lab05, is this correct? |yes| y
-CrazyOverdose/lab05: enabled :)
+Detected repository as CrazyOverdose/lab06, is this correct? |yes| y
+CrazyOverdose/lab06: enabled :)
 ```
 Сохранение результата
 ```ShellSession
 $ mkdir artifacts
 $ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
 # for macOS: $ screencapture -T 20 artifacts/screenshot.png
-# open https://github.com/${GITHUB_USERNAME}/lab05
+# open https://github.com/${GITHUB_USERNAME}/lab06
 ```
 
 ## Report
