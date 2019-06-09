@@ -1,120 +1,195 @@
-## Laboratory work V
+## Laboratory work VI
 
-Данная лабораторная работа посвещена изучению фреймворков для тестирования на примере **GTest**
+Данная лабораторная работа посвещена изучению средств пакетирования на примере **CPack**
 
 ```ShellSession
-$ open https://github.com/google/googletest
+$ open https://cmake.org/Wiki/CMake:CPackPackageGenerators
 ```
 
 ## Tasks
 
-- [x] 1. Создать публичный репозиторий с названием **lab06** на сервисе **GitHub**
-- [x] 2. Выполнить инструкцию учебного материала
-- [x] 3. Ознакомиться со ссылками учебного материала
-- [x] 4. Составить отчет и отправить ссылку личным сообщением в **Slack**
+- [ ] 1. Создать публичный репозиторий с названием **lab06** на сервисе **GitHub**
+- [ ] 2. Выполнить инструкцию учебного материала
+- [ ] 3. Ознакомиться со ссылками учебного материала
+- [ ] 4. Составить отчет и отправить ссылку личным сообщением в **Slack**
 
 ## Tutorial
-Настройка переменных окружения
+Установка переменных
 ```ShellSession
 $ export GITHUB_USERNAME=CrazyOverdose
+$ export GITHUB_EMAIL=alenkavh@yandex.ru
+$ alias edit=nano
 $ alias gsed=sed # for *-nix system
 ```
 Подготовка рабочего пространства
 ```ShellSession
-$ cd ${GITHUB_USERNAME}/workspace  # Переход в папку workspace
-$ pushd .                       # Сохранение текущей директории
+$ cd ${GITHUB_USERNAME}/workspace
+$ pushd .
 ~/CrazyOverdose/workspace ~/CrazyOverdose/workspace
-$ source scripts/activate  # Выполнение скрипта подготовки
+$ source scripts/activate
 ```
-Клонирование репозитория ЛР4 в ЛР5
+Клонирование репозитория ЛР5 в ЛР6
 ```ShellSession
-$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab06   # Клонирование репозитория
+$ git clone https://github.com/${GITHUB_USERNAME}/lab05 projects/lab06
 Клонирование в «projects/lab06»…
-remote: Enumerating objects: 34, done.
-remote: Counting objects: 100% (34/34), done.
-remote: Compressing objects: 100% (23/23), done.
-remote: Total 34 (delta 7), reused 30 (delta 6), pack-reused 0
-Распаковка объектов: 100% (34/34), готово.
-$ cd projects/lab06   # Переход в директорию
-$ git remote remove origin  # Удаление связки с репозиторием
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06  # Добавление связки
+remote: Enumerating objects: 48, done.
+remote: Counting objects: 100% (48/48), done.
+remote: Compressing objects: 100% (29/29), done.
+remote: Total 48 (delta 13), reused 44 (delta 12), pack-reused 0
+Распаковка объектов: 100% (48/48), готово.
+$ cd projects/lab06
+$ git remote remove origin
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06
 ```
-Добавление подмодуля тестирования
+Редактирование CMakeLists.txt. 
 ```ShellSession
-$ mkdir third-party # Создание папки
-$ git submodule add https://github.com/google/googletest third-party/gtest # Скачивание удаленного репозитория в указанную папку
-Клонирование в «/home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/third-party/gtest»…
-remote: Enumerating objects: 16892, done.
-remote: Total 16892 (delta 0), reused 0 (delta 0), pack-reused 16892
-Получение объектов: 100% (16892/16892), 5.96 MiB | 107.00 KiB/s, готово.
-Определение изменений: 100% (12445/12445), готово.
-$ cd third-party/gtest && git checkout release-1.8.1 && cd ../..   # Переход в указанную папку, переход в указанную ветку, возврат
-Примечание: переход на «release-1.8.1».
-
-Вы сейчас в состоянии «отделённого HEAD». Вы можете осмотреться, сделать
-экспериментальные изменения и закоммитить их, также вы можете отменить
-изменения любых коммитов в этом состоянии не затрагивая любые ветки и
-не переходя на них.
-
-Если вы хотите создать новую ветку и сохранить свои коммиты, то вы
-можете сделать это (сейчас или позже) вызвав команду checkout снова,
-но с параметром -b. Например:
-
-  git checkout -b <имя-новой-ветки>
-
-HEAD сейчас на 2fe3bd99 Merge pull request #1433 from dsacre/fix-clang-warnings
-$ git add third-party/gtest   # Фиксирование изменений
-$ git commit -m"added gtest framework" # Коммит изменений
-[master a78bd29] added gtest framework
- 2 files changed, 4 insertions(+)
- create mode 100644 .gitmodules
- create mode 160000 third-party/gtest
-```
-Редактирование CMakeList.txt
-```ShellSession
-$ gsed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\  # Вставка строки после указанной 
-option(BUILD_TESTS "Build tests" OFF)
+$ gsed -i '/project(print)/a\   # Дописывание в файл указанной строки
+set(PRINT_VERSION_STRING "v\${PRINT_VERSION}")
 ' CMakeLists.txt
-$ cat >> CMakeLists.txt <<EOF   # Дописывание в CMakeLists.txt 
-
-if(BUILD_TESTS)
-  enable_testing()
-  add_subdirectory(third-party/gtest)
-  file(GLOB \${PROJECT_NAME}_TEST_SOURCES tests/*.cpp)
-  add_executable(check \${\${PROJECT_NAME}_TEST_SOURCES})
-  target_link_libraries(check \${PROJECT_NAME} gtest_main)
-  add_test(NAME check COMMAND check)
-endif()
+$ gsed -i '/project(print)/a\
+set(PRINT_VERSION\
+  \${PRINT_VERSION_MAJOR}.\${PRINT_VERSION_MINOR}.\${PRINT_VERSION_PATCH}.\${PRINT_VERSION_TWEAK})
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_TWEAK 0)
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_PATCH 0)
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_MINOR 1)
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_MAJOR 0)
+' CMakeLists.txt
+$ git diff
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 89739e7..0f4c943 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -7,6 +7,13 @@ option(BUILD_EXAMPLES "Build examples" OFF)
+ option(BUILD_TESTS "Build tests" OFF)
+ 
+ project(print)
++set(PRINT_VERSION_MAJOR 0)
++set(PRINT_VERSION_MINOR 1)
++set(PRINT_VERSION_PATCH 0)
++set(PRINT_VERSION_TWEAK 0)
++set(PRINT_VERSION
++${PRINT_VERSION_MAJOR}.${PRINT_VERSION_MINOR}.${PRINT_VERSION_PATCH}.${PRINT_VERSION_TWEAK})
++set(PRINT_VERSION_STRING "v${PRINT_VERSION}")
+ 
+ add_library(print STATIC ${CMAKE_CURRENT_SOURCE_DIR}/sources/print.cpp)
+```
+Настройка файлов логирования
+```ShellSession
+$ touch DESCRIPTION && edit DESCRIPTION    # Создание и редактирование DESCRIPTION
+$ touch ChangeLog.md                       # Создание ChangeLog.md
+$ export DATE="`LANG=en_US date +'%a %b %d %Y'`"  # Создание переменной DATE
+$ cat > ChangeLog.md <<EOF                         # Запись в файл ChangeLog.md
+* ${DATE} ${GITHUB_USERNAME} <${GITHUB_EMAIL}> 0.1.0.0
+- Initial RPM release
 EOF
 ```
-Создание кода с тестами
+Включаем в проект InstallRequiredSystemLibraries
 ```ShellSession
-$ mkdir tests   # Создание  папки
-$ cat > tests/test1.cpp <<EOF   # Создание  файла с кодом
-#include <print.hpp>
-
-#include <gtest/gtest.h>
-
-TEST(Print, InFileStream)
-{
-  std::string filepath = "file.txt";
-  std::string text = "hello";
-  std::ofstream out{filepath};
-
-  print(text, out);
-  out.close();
-
-  std::string result;
-  std::ifstream in{filepath};
-  in >> result;
-
-  EXPECT_EQ(result, text);
-}
+$ cat > CPackConfig.cmake <<EOF  # Запись в файл указанной строки
+include(InstallRequiredSystemLibraries)
 EOF
 ```
-Сборка проекта
+Дописывание в файл конфигурации переменных
 ```ShellSession
-$ cmake -H. -B_build -DBUILD_TESTS=ON  # Конфигурирование
+$ cat >> CPackConfig.cmake <<EOF       # Запись в файл ChangeLog.md
+set(CPACK_PACKAGE_CONTACT ${GITHUB_EMAIL})
+set(CPACK_PACKAGE_VERSION_MAJOR \${PRINT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR \${PRINT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH \${PRINT_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION_TWEAK \${PRINT_VERSION_TWEAK})
+set(CPACK_PACKAGE_VERSION \${PRINT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_FILE \${CMAKE_CURRENT_SOURCE_DIR}/DESCRIPTION)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "static C++ library for printing")
+EOF
+```
+Включаем в пакет лицензию и README.md
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF
+
+set(CPACK_RESOURCE_FILE_LICENSE \${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
+set(CPACK_RESOURCE_FILE_README \${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+EOF
+```
+Добавление в конфигурацию информации о RPM
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF
+
+set(CPACK_RPM_PACKAGE_NAME "print-devel")
+set(CPACK_RPM_PACKAGE_LICENSE "MIT")
+set(CPACK_RPM_PACKAGE_GROUP "print")
+set(CPACK_RPM_CHANGELOG_FILE \${CMAKE_CURRENT_SOURCE_DIR}/ChangeLog.md)
+set(CPACK_RPM_PACKAGE_RELEASE 1)
+EOF
+```
+Добавление информации о DEB
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF
+
+set(CPACK_DEBIAN_PACKAGE_NAME "libprint-dev")
+set(CPACK_DEBIAN_PACKAGE_PREDEPENDS "cmake >= 3.0")
+set(CPACK_DEBIAN_PACKAGE_RELEASE 1)
+EOF
+```
+Подключение CPack в CMake конфиг
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF
+
+include(CPack)
+EOF
+```
+Подключение дополнительной конфигурации
+```ShellSession
+$ cat >> CMakeLists.txt <<EOF
+
+include(CPackConfig.cmake)
+EOF
+```
+Изменение README.md
+```ShellSession
+$ gsed -i 's/lab05/lab06/g' README.md
+```
+Отправка изменений
+```ShellSession
+$ git add .                            # Фиксация изменений
+$ git commit -m"added cpack config"
+[master 19bf855] added cpack config
+ 5 files changed, 62 insertions(+), 32 deletions(-)
+ create mode 100644 CPackConfig.cmake
+ create mode 100644 ChangeLog.md
+ create mode 100644 DESCRIPTION
+$ git tag v0.1.0.0
+$ git push origin master --tags          # Отправка изменений
+Username for 'https://github.com': CrazyOverdose
+Password for 'https://CrazyOverdose@github.com': 
+Перечисление объектов: 54, готово.
+Подсчет объектов: 100% (54/54), готово.
+Сжатие объектов: 100% (47/47), готово.
+Запись объектов: 100% (54/54), 29.03 KiB | 4.15 MiB/s, готово.
+Всего 54 (изменения 16), повторно использовано 0 (изменения 0)
+remote: Resolving deltas: 100% (16/16), done.
+To https://github.com/CrazyOverdose/lab06
+ * [new branch]      master -> master
+ * [new tag]         v0.1.0.0 -> v0.1.0.0
+```
+Настройка Travis CI
+```ShellSession
+$ travis login --auto      # Авторизация в Travis CI
+Successfully logged in as CrazyOverdose!
+$ travis enable                 # Включение обработки в Travis CI
+Detected repository as CrazyOverdose/lab06, is this correct? |yes| y
+CrazyOverdose/lab06: enabled :)
+```
+Сборка и компиляция через CMake. Создание пакета через CPack
+```ShellSession
+$ cmake -H. -B_build  # Сборка
 -- The C compiler identification is GNU 8.3.0
 -- The CXX compiler identification is GNU 8.3.0
 -- Check for working C compiler: /usr/bin/cc
@@ -129,303 +204,56 @@ $ cmake -H. -B_build -DBUILD_TESTS=ON  # Конфигурирование
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Found PythonInterp: /usr/bin/python (found version "3.7.3") 
--- Looking for pthread.h
--- Looking for pthread.h - found
--- Looking for pthread_create
--- Looking for pthread_create - not found
--- Check if compiler accepts -pthread
--- Check if compiler accepts -pthread - yes
--- Found Threads: TRUE  
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
-
 $ cmake --build _build   # Компиляция
 Scanning dependencies of target print
-[  8%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
-[ 16%] Linking CXX static library libprint.a
-[ 16%] Built target print
-Scanning dependencies of target gtest
-[ 25%] Building CXX object third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
-[ 33%] Linking CXX static library libgtest.a
-[ 33%] Built target gtest
-Scanning dependencies of target gtest_main
-[ 41%] Building CXX object third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
-[ 50%] Linking CXX static library libgtest_main.a
-[ 50%] Built target gtest_main
-Scanning dependencies of target check
-[ 58%] Building CXX object CMakeFiles/check.dir/tests/test1.cpp.o
-[ 66%] Linking CXX executable check
-[ 66%] Built target check
-Scanning dependencies of target gmock
-[ 75%] Building CXX object third-party/gtest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
-[ 83%] Linking CXX static library libgmock.a
-[ 83%] Built target gmock
-Scanning dependencies of target gmock_main
-[ 91%] Building CXX object third-party/gtest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
-[100%] Linking CXX static library libgmock_main.a
-[100%] Built target gmock_main
-
-$ cmake --build _build --target test   # Компиляция указанного
-Running tests...
-Test project /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
-    Start 1: check
-1/1 Test #1: check ............................   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 1
-
-Total Test time (real) =   0.01 sec
+[ 50%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
+[100%] Linking CXX static library libprint.a
+[100%] Built target print
+$ cd _build         # Переход в директорию
+$ cpack -G "TGZ"    # Упаковка с использованием CPack
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print
+CPack: Create package
+CPack: - package: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/print-0.1.0.0-Linux.tar.gz generated.
+$ cd ..
 ```
-Проверка тестов
+Сборка и создание пакета через CMake
 ```ShellSession
-$ _build/check  # Исполнение файла с тестами
-Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
-[==========] Running 1 test from 1 test case.
-[----------] Global test environment set-up.
-[----------] 1 test from Print
-[ RUN      ] Print.InFileStream
-[       OK ] Print.InFileStream (1 ms)
-[----------] 1 test from Print (1 ms total)
-
-[----------] Global test environment tear-down
-[==========] 1 test from 1 test case ran. (1 ms total)
-[  PASSED  ] 1 test.
-
-$ cmake --build _build --target test -- ARGS=--verbose  # Компиляция с выводом всей информации
-Running tests...
-UpdateCTestConfiguration  from :/home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/DartConfiguration.tcl
-UpdateCTestConfiguration  from :/home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/DartConfiguration.tcl
-Test project /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
-Constructing a list of tests
-Done constructing a list of tests
-Updating test list for fixtures
-Added 0 tests to meet fixture requirements
-Checking test dependency graph...
-Checking test dependency graph end
-test 1
-    Start 1: check
-
-1: Test command: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/check
-1: Test timeout computed to be: 10000000
-1: Running main() from /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
-1: [==========] Running 1 test from 1 test case.
-1: [----------] Global test environment set-up.
-1: [----------] 1 test from Print
-1: [ RUN      ] Print.InFileStream
-1: [       OK ] Print.InFileStream (1 ms)
-1: [----------] 1 test from Print (1 ms total)
-1: 
-1: [----------] Global test environment tear-down
-1: [==========] 1 test from 1 test case ran. (1 ms total)
-1: [  PASSED  ] 1 test.
-1/1 Test #1: check ............................   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 1
-
-Total Test time (real) =   0.00 sec
-
+$ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"   # Сборка
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build
+$ cmake --build _build --target package    # Компиляция
+[100%] Built target print
+Run CPack packaging tool...
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print
+CPack: Create package
+CPack: - package: /home/absinthetoxin/CrazyOverdose/workspace/projects/lab06/_build/print-0.1.0.0-Linux.tar.gz generated.
 ```
-Обновление Travis CI конфига
-```ShellSession
-$ gsed -i 's/lab04/lab06/g' README.md  # Замена левой строки на правую
-$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml 
-# Дописывание к найденной левой строки строке правой строки
-$ gsed -i '/cmake --build _build --target install/a\ # Дописывание правой строки после найденной левой строки
-- cmake --build _build --target test -- ARGS=--verbose
-' .travis.yml
-```
-Проверка конфига
-```ShellSession
-$ travis lint
-Warnings for .travis.yml:
-[x] value for addons section is empty, dropping
-[x] in addons section: unexpected key apt, dropping
-```
-Отправка изменений
-```ShellSession
-$ git add .travis.yml  # Фиксация указанного файла
-$ git add tests        # Фиксация указанного файла
-$ git add -p
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 96a361e..89739e7 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 11)
- set(CMAKE_CXX_STANDARD_REQUIRED ON)
- 
- option(BUILD_EXAMPLES "Build examples" OFF)
-+option(BUILD_TESTS "Build tests" OFF)
- 
- project(print)
- 
-Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
-y - stage this hunk
-n - do not stage this hunk
-q - quit; do not stage this hunk or any of the remaining ones
-a - stage this hunk and all later hunks in the file
-d - do not stage this hunk or any of the later hunks in the file
-g - select a hunk to go to
-/ - search for a hunk matching the given regex
-j - leave this hunk undecided, see next undecided hunk
-J - leave this hunk undecided, see next hunk
-e - manually edit the current hunk
-? - print help
-@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 11)
- set(CMAKE_CXX_STANDARD_REQUIRED ON)
- 
- option(BUILD_EXAMPLES "Build examples" OFF)
-+option(BUILD_TESTS "Build tests" OFF)
- 
- project(print)
- 
-Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
-@@ -34,3 +35,11 @@ install(TARGETS print
- 
- install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION include)
- install(EXPORT print-config DESTINATION cmake)
-+if(BUILD_TESTS)
-+  enable_testing()
-+  add_subdirectory(third-party/gtest)
-+  file(GLOB ${PROJECT_NAME}_TEST_SOURCES tests/*.cpp)
-+  add_executable(check ${${PROJECT_NAME}_TEST_SOURCES})
-+  target_link_libraries(check ${PROJECT_NAME} gtest_main)
-+  add_test(NAME check COMMAND check)
-+endif()
-Stage this hunk [y,n,q,a,d,K,g,/,e,?]? y
+Перемещение собранного пакета
+```ShellSession  
+$ mkdir artifacts     # Создание указанной папки 
+$ mv _build/*.tar.gz artifacts  # Перемещение собранного пакета
+$ tree artifacts   # Дерево папки
+artifacts
+└── print-0.1.0.0-Linux.tar.gz
 
-diff --git a/README.md b/README.md
-index 55b5a9f..609c771 100644
---- a/README.md
-+++ b/README.md
-@@ -9,7 +9,7 @@ $ open https://travis-ci.org
- ## Tasks
- 
- - [x] 1. Авторизоваться на сервисе **Travis CI** с использованием **GitHub** аккаунта
--- [x] 2. Создать публичный репозиторий с названием **lab04** на сервисе **GitHub**
-+- [x] 2. Создать публичный репозиторий с названием **lab06** на сервисе **GitHub**
- - [x] 3. Ознакомиться со ссылками учебного материала
- - [x] 4. Включить интеграцию сервиса **Travis CI** с созданным репозиторием
- - [x] 5. Получить токен для **Travis CLI** с правами **repo** и **user**
-Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
-@@ -163,16 +163,16 @@ Done installing documentation for multipart-post, faraday, faraday_middleware, h
-
- Клонирование репозитория ЛР3 в ЛР4
-
--$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04 # Клонирование репозитория
--Клонирование в «projects/lab04»…
-+$ git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab06 # Клонирование репозитория
-+Клонирование в «projects/lab06»…
- remote: Enumerating objects: 27, done.
- remote: Counting objects: 100% (27/27), done.
- remote: Compressing objects: 100% (19/19), done.
- remote: Total 27 (delta 4), reused 23 (delta 3), pack-reused 0
- Распаковка объектов: 100% (27/27), готово.
--$ cd projects/lab04  # Переход в директорию
-+$ cd projects/lab06  # Переход в директорию
- $ git remote remove origin # Удаление связки с репозиторием
--$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab04 # Добавление связки
-+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06 # Добавление связки
-
- Записывание в .travis.yml информации о языке
-
-Stage this hunk [y,n,q,a,d,K,j,J,g,/,s,e,?]? y
-@@ -217,7 +217,7 @@ Warnings for .travis.yml:
- 
- Добавление в начало файла строки с фрагментом вставки значка сервиса Travis CI в формате Markdown
- 
--$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab04.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab04)' README.md   # Команда изменена
-+$ sed -i '1i|[![Build Status](https://travis-ci.org/CrazyOverdose/lab06.svg?branch=master)](https://travis-ci.org/CrazyOverdose/lab06)' README.md   # Команда изменена
- 
- Отправка изменений
-Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
-@@ -237,7 +237,7 @@ Password for 'https://CrazyOverdose@github.com':
- Запись объектов: 100% (31/31), 14.38 KiB | 3.59 MiB/s, готово.
- Всего 31 (изменения 6), повторно использовано 0 (изменения 0)
- remote: Resolving deltas: 100% (6/6), done.
--To https://github.com/CrazyOverdose/lab04
-+To https://github.com/CrazyOverdose/lab06
-  * [new branch]      master -> master
- 
- Работа с Travis CI
-Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
-@@ -269,7 +269,7 @@ Description: ???
- CrazyOverdose/lab03 (active: no, admin: yes, push: yes, pull: yes)
- Description: ???
- 
--CrazyOverdose/lab04 (active: yes, admin: yes, push: yes, pull: yes)
-+CrazyOverdose/lab06 (active: yes, admin: yes, push: yes, pull: yes)
- Description: ???
- 
- CrazyOverdose/lab06 (active: no, admin: yes, push: yes, pull: yes)
-Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
-@@ -291,10 +291,10 @@ CrazyOverdose/labaa02 (active: no, admin: yes, push: yes, pull: yes)
- Description: Изучение систем контроля версий на примере Git
- 
- $ travis enable   # Активация проекта
--Detected repository as CrazyOverdose/lab04, is this correct? |yes| yes
--CrazyOverdose/lab04: enabled :)
-+Detected repository as CrazyOverdose/lab06, is this correct? |yes| yes
-+CrazyOverdose/lab06: enabled :)
- $ travis whatsup   # Список последних сборок
--CrazyOverdose/lab04 passed: #1
-+CrazyOverdose/lab06 passed: #1
- $ travis branches    # Список последних сборок по веткам проекта
- master:  #1    passed     added CI
- $ travis history  # История сборок для проекта
-Stage this hunk [y,n,q,a,d,K,j,J,g,/,s,e,?]? y
-@@ -304,7 +304,7 @@ Job #1.1:  added CI
- State:         passed
- Type:          push
- Branch:        master
--Compare URL:   https://github.com/CrazyOverdose/lab04/compare/89df61653546^...da3553aea864
-+Compare URL:   https://github.com/CrazyOverdose/lab06/compare/89df61653546^...da3553aea864
- Duration:      28 sec
- Started:       2019-06-09 19:09:31
- Finished:      2019-06-09 19:09:59
-Stage this hunk [y,n,q,a,d,K,g,/,e,?]? y
-
-
-$ git commit -m"added tests"
-
-[master da72cc9] added tests
- 4 files changed, 42 insertions(+), 13 deletions(-)
- create mode 100644 tests/test1.cpp
- 
-$ git push origin master  # Отправка изменений в удаленный репозиторий
-Username for 'https://github.com'CrazyOverdose
-Password for 'https://CrazyOverdose@github.com': 
-Перечисление объектов: 45, готово.
-Подсчет объектов: 100% (45/45), готово.
-Сжатие объектов: 100% (38/38), готово.
-Запись объектов: 100% (45/45), 21.24 KiB | 4.25 MiB/s, готово.
-Всего 45 (изменения 12), повторно использовано 0 (изменения 0)
-remote: Resolving deltas: 100% (12/12), done.
-To https://github.com/CrazyOverdose/lab06
- * [new branch]      master -> master
-
-```
-Авторизация и активация репозитория в travis
-```ShellSession
-$ travis login --auto
-Successfully logged in as CrazyOverdose!
-$ travis enable
-Detected repository as CrazyOverdose/lab06, is this correct? |yes| y
-CrazyOverdose/lab06: enabled :)
-```
-Сохранение результата
-```ShellSession
-$ mkdir artifacts
-$ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
-# for macOS: $ screencapture -T 20 artifacts/screenshot.png
-# open https://github.com/${GITHUB_USERNAME}/lab06
+0 directories, 1 file
 ```
 
 ## Report
 
 ```ShellSession
 $ popd
-$ export LAB_NUMBER=05
+$ export LAB_NUMBER=06
 $ git clone https://github.com/tp-labs/lab${LAB_NUMBER} tasks/lab${LAB_NUMBER}
 $ mkdir reports/lab${LAB_NUMBER}
 $ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md
@@ -436,19 +264,57 @@ $ gistup -m "lab${LAB_NUMBER}"
 
 ## Homework
 
-### Задание
-1. Создайте `CMakeList.txt` для библиотеки *banking*.
-2. Создайте модульные тесты на классы `Transaction` и `Account`.
-    * Используйте mock-объекты.
-    * Покрытие кода должно составлять 100%.
-3. Настройте сборочную процедуру на **TravisCI**.
-4. Настройте [Coveralls.io](https://coveralls.io/).
+После того, как вы настроили взаимодействие с системой непрерывной интеграции,</br>
+обеспечив автоматическую сборку и тестирование ваших изменений, стоит задуматься</br>
+о создание пакетов для измениний, которые помечаются тэгами (см. вкладку [releases](https://github.com/tp-labs/lab06/releases)).</br>
+Пакет должен содержать приложение _solver_ из [предыдущего задания](https://github.com/tp-labs/lab03#задание-1)
+Таким образом, каждый новый релиз будет состоять из следующих компонентов:
+- архивы с файлами исходного кода (`.tar.gz`, `.zip`)
+- пакеты с бинарным файлом _solver_ (`.deb`, `.rpm`, `.msi`, `.dmg`)
+
+В качестве подсказки:
+```bash
+$ cat .travis.yml
+os: osx
+script:
+...
+- cpack -G DragNDrop # dmg
+
+$ cat .travis.yml
+os: linux
+script:
+...
+- cpack -G DEB # deb
+
+$ cat .travis.yml
+os: linux
+addons:
+  apt:
+    packages:
+    - rpm
+script:
+...
+- cpack -G RPM # rpm
+
+$ cat appveyor.yml
+platform:
+- x86
+- x64
+build_script:
+...
+- cpack -G WIX # msi
+```
+
+Для этого нужно добавить ветвление в конфигурационные файлы для **CI** со следующей логикой:</br>
+если **commit** помечен тэгом, то необходимо собрать пакеты (`DEB, RPM, WIX, DragNDrop, ...`) </br>
+и разместить их на сервисе **GitHub**. (см. пример для [Travi CI](https://docs.travis-ci.com/user/deployment/releases))</br>
 
 ## Links
 
-- [C++ CI: Travis, CMake, GTest, Coveralls & Appveyor](http://david-grs.github.io/cpp-clang-travis-cmake-gtest-coveralls-appveyor/)
-- [Boost.Tests](http://www.boost.org/doc/libs/1_63_0/libs/test/doc/html/)
-- [Catch](https://github.com/catchorg/Catch2)
+- [DMG](https://cmake.org/cmake/help/latest/module/CPackDMG.html)
+- [DEB](https://cmake.org/cmake/help/latest/module/CPackDeb.html)
+- [RPM](https://cmake.org/cmake/help/latest/module/CPackRPM.html)
+- [NSIS](https://cmake.org/cmake/help/latest/module/CPackNSIS.html)
 
 ```
 Copyright (c) 2015-2019 The ISC Authors
